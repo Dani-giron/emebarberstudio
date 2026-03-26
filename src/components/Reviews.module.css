@@ -1,0 +1,106 @@
+.reviews {
+  background: var(--color-bg-alt);
+}
+
+.head {
+  margin-bottom: 3rem;
+}
+
+/* ── Grid: 1 col → 2 col → 3 col, última card centrada si sobra ─────────── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px)  { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* Última card en 3 col: si son 5, la última ocupa 1 col centrada */
+@media (min-width: 1024px) {
+  .card:last-child:nth-child(3n - 2) { grid-column: 2; }
+}
+
+/* ── Tarjeta ─────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.card:hover {
+  border-color: var(--color-accent-dark);
+  transform: translateY(-3px);
+}
+
+/* ── Cabecera de la card ─────────────────────────────────────────────────── */
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+/* Avatar con inicial */
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-border);
+  color: var(--color-white);
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--color-accent-dark);
+}
+
+.reviewer {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-white);
+  line-height: 1.2;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.15rem;
+}
+
+.source {
+  font-size: 0.7rem;
+  color: var(--color-gray);
+}
+
+.dot {
+  font-size: 0.7rem;
+  color: var(--color-gray);
+}
+
+.time {
+  font-size: 0.7rem;
+  color: var(--color-gray);
+}
+
+/* ── Estrellas ───────────────────────────────────────────────────────────── */
+.stars {
+  display: flex;
+  gap: 0.2rem;
+  color: #d4d4d4;   /* plata — mismo acento del sitio */
+}
+
+/* ── Texto ───────────────────────────────────────────────────────────────── */
+.text {
+  font-size: 0.875rem;
+  color: var(--color-gray-light);
+  line-height: 1.75;
+  flex: 1;
+}

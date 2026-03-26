@@ -1,0 +1,231 @@
+/* Preloader/Hero */
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+  padding: 0;          /* anula el padding: 100px 0 del CSS global de section */
+  background: #0f0f0f;
+}
+
+/* ── Overlay: sólo el fondo oscuro, sin hijos ────────────────────────────── */
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background-color: #0f0f0f;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  will-change: clip-path;
+  z-index: 0;
+}
+
+/* ── Contador — z:5, visible siempre por encima de todo ─────────────────── */
+.counter {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  z-index: 5;
+  color: #fff;
+  pointer-events: none;
+}
+
+.counter h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 4rem;
+  font-weight: 400;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Texto ciclante — z:5 ────────────────────────────────────────────────── */
+.overlayTextContainer {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  height: 2rem;
+  overflow: hidden;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.overlayText {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(2rem);
+  will-change: transform;
+}
+
+.overlayText p {
+  color: #fff;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+/* ── Imágenes — z:2 ──────────────────────────────────────────────────────── */
+.heroImages {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 10vw;
+  will-change: gap;
+  z-index: 2;
+}
+
+.img {
+  width: 14vw;
+  aspect-ratio: 5 / 7;
+  transform: translateY(50%) scale(0.5);
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  opacity: 0;
+  overflow: hidden;
+  will-change: opacity, transform, clip-path;
+  flex-shrink: 0;
+}
+
+.img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Título — z:3 ────────────────────────────────────────────────────────── */
+.heroHeader {
+  position: absolute;
+  bottom: 2rem;
+  width: 100%;
+  text-align: center;
+  z-index: 3;
+}
+
+/* Máscara "EME" */
+.emeMask {
+  overflow: hidden;
+  line-height: 1;
+}
+
+.eme {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(4.5rem, 11vw, 11rem);
+  font-weight: 300;
+  font-style: italic;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transform: translateY(110%);
+  will-change: transform;
+  display: block;
+}
+
+/* Máscara "BARBER STUDIO" */
+.subMask {
+  overflow: hidden;
+  line-height: 1;
+  margin-top: 0.2rem;
+}
+
+.sub {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(0.85rem, 2.2vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: #fff;
+  transform: translateY(110%);
+  will-change: transform;
+  display: block;
+}
+
+/* ── CTAs — aparecen con el título ──────────────────────────────────────── */
+.cta {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(1.5rem);
+  will-change: transform, opacity;
+  margin-top: 1.25rem;
+}
+
+.ctaBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.ctaBtn:hover { opacity: 0.85; }
+
+.ctaBtnPrimary {
+  background: #fff;
+  color: #0f0f0f;
+  border: 1.5px solid #fff;
+}
+
+.ctaBtnOutline {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.5);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+  .counter              { right: 1rem; bottom: 1rem; }
+  .counter h1           { font-size: 2.5rem; }
+  .overlayTextContainer { top: 1rem; left: 1rem; }
+  .heroImages           { padding: 0; }   /* sin override de gap — mantiene 10vw para la animación */
+  .img                  { width: 18vw; }
+}
+
+@media (max-width: 600px) {
+  /* 20vw → 3 fotos visibles durante la animación.
+     GSAP aplica scale:3 → visual 60vw ancho × 84vw alto */
+  .img { width: 20vw; }
+
+  /* Imagen centrada */
+  .heroImages { top: 50%; }
+
+  /* EME pisa la foto ~15px.
+     50svh = centro imagen · 42vw = mitad altura visual (84vw/2) · 46vw = altura header aprox */
+  .heroHeader { bottom: max(1rem, calc(50svh - 88vw + 15px)); }
+
+  /* Fuentes — EME grande, BARBER STUDIO casi full-width */
+  .eme { font-size: clamp(4rem, 24vw, 7rem); }
+  .sub {
+    font-size: clamp(1.1rem, 8vw, 2.5rem);
+    letter-spacing: 0.38em;
+  }
+
+  /* CTAs en fila compacta */
+  .cta { gap: 0.5rem; margin-top: 0.75rem; }
+  .ctaBtn {
+    padding: 0.65rem 1.1rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    gap: 0.4rem;
+  }
+  .ctaBtn svg { width: 14px; height: 14px; }
+
+  /* Contador visible */
+  .counter { right: 1rem; bottom: 1rem; }
+  .counter h1 { font-size: 2rem; font-weight: 500; }
+}

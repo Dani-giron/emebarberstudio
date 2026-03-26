@@ -1,0 +1,103 @@
+.services {
+  background: var(--color-bg-alt);
+}
+
+.head {
+  margin-bottom: 3rem;
+}
+
+/* ── Categoría ───────────────────────────────────────────────────────────── */
+.category {
+  margin-bottom: 3rem;
+}
+
+.catTitle {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ── Fila de servicio ────────────────────────────────────────────────────── */
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--color-border);
+  transition: background 0.2s ease;
+}
+
+.row:hover { background: rgba(255,255,255,0.02); }
+
+.rowName {
+  font-size: 1rem;
+  color: var(--color-white);
+  font-weight: 400;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Precio + tiempo + botón alineados a la derecha */
+.rowRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
+}
+
+.rowMeta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+}
+
+.rowPrice {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-white);
+  white-space: nowrap;
+}
+
+.rowTime {
+  font-size: 0.75rem;
+  color: var(--color-gray);
+  white-space: nowrap;
+}
+
+/* Botón reservar — estilo minimalista */
+.reserveBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1.1rem;
+  background: var(--color-white);
+  color: #000;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.reserveBtn:hover {
+  background: var(--color-accent-light);
+  transform: translateY(-1px);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .row { flex-wrap: wrap; gap: 0.75rem; }
+  .rowName { width: 100%; }
+  .rowRight { width: 100%; justify-content: space-between; }
+}

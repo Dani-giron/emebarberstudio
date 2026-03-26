@@ -1,0 +1,216 @@
+/* Gallery — 1:1 con stylesrefe.css */
+
+.gallery { padding: 0; }
+
+.slider {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0f0f0f;
+}
+
+/* ── Slides ─────────────────────────────────────────────────────────────── */
+.slideContainer {
+  position: absolute;
+  width: 30%;
+  height: 70%;
+  top: 50%;
+  left: 50%;
+  /* sin transform: GSAP gestiona todo el posicionamiento */
+  background-color: #000;
+  cursor: pointer;
+  will-change: transform, opacity, clip-path;
+  z-index: 2;
+}
+
+.slideImg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  overflow: hidden;
+}
+
+.slideImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.5);
+  opacity: 0.75;
+  will-change: transform;
+  display: block;
+}
+
+/* ── Título animado ─────────────────────────────────────────────────────── */
+.sliderTitle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 60px;
+  text-align: center;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.sliderTitle h1 {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  color: #fff;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem;
+  font-weight: 500;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.sliderTitle h1 span {
+  position: relative;
+  display: inline-block;
+  transform: translateY(50px);
+  will-change: transform;
+}
+
+/* ── Contador ───────────────────────────────────────────────────────────── */
+.sliderCounter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 2.5em;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.sliderCounter p {
+  display: flex;
+  gap: 1em;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── Lista lateral ──────────────────────────────────────────────────────── */
+.sliderItems {
+  position: absolute;
+  left: 2.5em;
+  bottom: 2.5em;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sliderItems p {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5e5e5e;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: color 0.5s ease;
+}
+
+.activeItem {
+  color: #fff !important;
+}
+
+/* ── Preview de fondo ───────────────────────────────────────────────────── */
+.sliderPreview {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 75%;
+  height: 100%;
+  z-index: 0;
+  opacity: 0.35;
+  overflow: hidden;
+}
+
+.sliderPreview img {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: pan 20s infinite linear;
+}
+
+@keyframes pan {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.25); }
+  100% { transform: scale(1); }
+}
+
+/* ── Cursor zoom en slide activo ────────────────────────────────────────── */
+.slideContainer[data-pos="active"] { cursor: zoom-in; }
+
+/* ── Lightbox ───────────────────────────────────────────────────────────── */
+.lightboxBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightboxPopup {
+  position: relative;
+  width: min(55vw, 480px);
+  height: min(78vh, 680px);
+  background: #111;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8);
+}
+
+.lightboxPopup img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform: none;
+  opacity: 1;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 1.1rem;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 0.2s;
+}
+.lightboxClose:hover { background: rgba(255,255,255,0.15); }
+
+/* ── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .slideContainer { top: 75%; width: 70%; height: 50%; }
+  .sliderPreview  { top: 0; left: 0; transform: none; width: 100%; height: 100%; opacity: 0.2; }
+  .sliderTitle    { width: 85%; }
+  .sliderTitle h1 { font-size: 1.8rem; }
+  .sliderItems    { display: none; }
+  .lightboxPopup  { width: 88vw; height: 65vh; }
+}

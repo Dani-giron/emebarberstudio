@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vite:*)",
+      "Read(//c/Users/Dani/.claude/projects/c--Users-Dani-Desktop-emestudiobarber/**)",
+      "Bash(grep -rl \"from ''../App''\" c:/Users/Dani/Desktop/emestudiobarber/src/components/)",
+      "Bash(node -e \"const fs=require\\(''''fs''''\\); const buf=fs.readFileSync\\(''''public/images/logo.webp''''\\); console.log\\(''''size:'''', buf.length, ''''bytes''''\\)\")",
+      "Bash(magick --version)",
+      "Bash(convert --version)",
+      "Bash(node -e \":*)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Dani\\.claude\\projects\\c--Users-Dani-Desktop-emestudiobarber"
+    ]
+  }
+}
