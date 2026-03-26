@@ -20,6 +20,7 @@ const CATEGORIES = [
   {
     name: 'Barba',
     items: [
+      { name: 'Corte + Barba',          price: '18 €', time: '45 min' },
       { name: 'Barba desde 0',          price: '10 €', time: '30 min' },
       { name: 'Repaso de barba',         price: '5 €',  time: '15 min' },
       { name: 'Marcar bigote y perilla', price: '3 €',  time: '5 min'  },
