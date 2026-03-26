@@ -7,6 +7,22 @@
   overflow: hidden;
   padding: 0;          /* anula el padding: 100px 0 del CSS global de section */
   background: #0f0f0f;
+  isolation: isolate;
+}
+
+/* ── Foto de fondo — detrás del overlay ─────────────────────────────────── */
+.bgPhoto {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.bgPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.07;
 }
 
 /* ── Overlay: sólo el fondo oscuro, sin hijos ────────────────────────────── */
@@ -16,7 +32,7 @@
   background-color: #0f0f0f;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   will-change: clip-path;
-  z-index: 0;
+  z-index: 1;
 }
 
 /* ── Contador — z:5, visible siempre por encima de todo ─────────────────── */

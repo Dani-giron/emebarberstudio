@@ -40,6 +40,43 @@
   opacity: 0.75;
   will-change: transform;
   display: block;
+  transition: transform 1.2s ease, opacity 1.2s ease;
+}
+
+/* Slides laterales: menos zoom, más oscuras */
+.slideContainer[data-pos="prev"] .slideImg img,
+.slideContainer[data-pos="next"] .slideImg img {
+  transform: scale(1.1);
+  opacity: 0.2;
+}
+
+/* Etiqueta de corte en slides laterales */
+.slideLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Contra-rotación estática por posición — se aplica tras cada transición */
+.slideContainer[data-pos="prev"] .slideLabel {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.slideContainer[data-pos="next"] .slideLabel {
+  transform: translate(-50%, -50%) rotate(-90deg);
+}
+.slideContainer[data-pos="active"] .slideLabel {
+  transform: translate(-50%, -50%);
+  opacity: 0;
 }
 
 /* ── Título animado ─────────────────────────────────────────────────────── */

@@ -138,6 +138,11 @@ export default function Preloader() {
   return (
     <section className={styles.hero} id="inicio">
 
+      {/* Foto de fondo */}
+      <div className={styles.bgPhoto}>
+        <img src="/images/barberia.jpg" alt="" aria-hidden="true" />
+      </div>
+
       {/* Overlay oscuro */}
       <div ref={overlayRef} className={styles.heroOverlay} />
 

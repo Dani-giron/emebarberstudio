@@ -165,7 +165,8 @@ export default function Gallery() {
       el.className = styles.slideContainer
       el.dataset.pos = dataPos
       el.innerHTML = `<div class="${styles.slideImg}">
-        <img src="${slide.img}" alt="${slide.name}" /></div>`
+        <img src="${slide.img}" alt="${slide.name}" /></div>
+        <span class="${styles.slideLabel}">${slide.name}</span>`
       return el
     }
 
@@ -215,6 +216,9 @@ export default function Gallery() {
       const actEl  = slider.querySelector('[data-pos="active"]')
       const inEl   = slider.querySelector(`[data-pos="${inPos}"]`)
 
+      // Ocultar todas las etiquetas al inicio de la transición
+      slider.querySelectorAll(`.${styles.slideLabel}`).forEach(l => gsap.set(l, { opacity: 0 }))
+
       const mob = isMobile()
       const dur = mob ? 0.7 : 2
 
@@ -261,6 +265,14 @@ export default function Gallery() {
         newSlide.dataset.pos = inPos
         current.current      = nextIdx
         animating.current    = false
+
+        // Mostrar etiquetas en los slides laterales (CSS ya aplica contra-rotación)
+        if (!mob) {
+          ;[actEl, newSlide].forEach(el => {
+            const label = el.querySelector(`.${styles.slideLabel}`)
+            if (label) gsap.to(label, { opacity: 1, duration: 0.4, ease: 'power2.out' })
+          })
+        }
       }, lockMs)
     }
   }, [])
@@ -286,16 +298,19 @@ export default function Gallery() {
           <div className={styles.slideImg}>
             <img src={SLIDES[wrap(-1)].img} alt={SLIDES[wrap(-1)].name} />
           </div>
+          <span className={styles.slideLabel}>{SLIDES[wrap(-1)].name}</span>
         </div>
         <div className={styles.slideContainer} data-pos="active">
           <div className={styles.slideImg}>
             <img src={SLIDES[0].img} alt={SLIDES[0].name} />
           </div>
+          <span className={styles.slideLabel}>{SLIDES[0].name}</span>
         </div>
         <div className={styles.slideContainer} data-pos="next">
           <div className={styles.slideImg}>
             <img src={SLIDES[1].img} alt={SLIDES[1].name} />
           </div>
+          <span className={styles.slideLabel}>{SLIDES[1].name}</span>
         </div>
 
         {/* Título animado por caracteres */}
