@@ -81,8 +81,10 @@ export default function Preloader() {
     revealTl.to(heroImg, {
       scale: getScale(), duration: 1, ease: 'hop',
       onComplete() {
-        // Quitar will-change fuerza al navegador a re-rasterizar
-        // la imagen a resolución completa → elimina el pixelado
+        // 1. force3D:false convierte matrix3d → scale() 2D
+        //    → libera la capa GPU → Safari re-rasteriza a resolución nativa
+        gsap.set(heroImg, { force3D: false, scale: getScale() })
+        // 2. Quitar will-change del contenedor e imagen
         heroImg.style.willChange = 'auto'
         heroImg.querySelector('img').style.willChange = 'auto'
       },

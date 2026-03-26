@@ -49,7 +49,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
-  height: 60px;
+  height: 80px;
   text-align: center;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   z-index: 10;
@@ -59,12 +59,12 @@
 .sliderTitle h1 {
   position: absolute;
   width: 100%;
-  height: 50px;
+  height: 70px;
   text-align: center;
   color: #fff;
   font-family: 'Cormorant Garamond', serif;
   font-size: 3rem;
-  font-weight: 500;
+  font-weight: 700;
   font-style: italic;
   white-space: nowrap;
 }
@@ -205,8 +205,54 @@
 }
 .lightboxClose:hover { background: rgba(255,255,255,0.15); }
 
+/* ── Flechas móvil (ocultas en desktop) ──────────────────────────────────── */
+.arrow {
+  display: none;   /* solo en móvil */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.arrow:hover { background: rgba(255,255,255,0.18); }
+.arrowPrev { left: 1rem; }
+.arrowNext { right: 1rem; }
+
 /* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 900px) {
+@media (max-width: 768px) {
+  /* Slide activo: centrado, ancho generoso */
+  .slideContainer[data-pos="active"] {
+    width: 78% !important;
+    height: 60% !important;
+    top: 42% !important;
+    left: 50% !important;
+  }
+  /* Slides laterales: fuera de la vista */
+  .slideContainer[data-pos="prev"],
+  .slideContainer[data-pos="next"] {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  .sliderPreview  { top: 0; left: 0; transform: none; width: 100%; height: 100%; opacity: 0.18; }
+  .sliderTitle    { width: 85%; }
+  .sliderTitle h1 { font-size: 2rem; }
+  .sliderItems    { display: none; }
+  .lightboxPopup  { width: 88vw; height: 65vh; }
+
+  /* Mostrar flechas */
+  .arrow { display: flex; }
+}
+
+@media (max-width: 900px) and (min-width: 769px) {
   .slideContainer { top: 75%; width: 70%; height: 50%; }
   .sliderPreview  { top: 0; left: 0; transform: none; width: 100%; height: 100%; opacity: 0.2; }
   .sliderTitle    { width: 85%; }

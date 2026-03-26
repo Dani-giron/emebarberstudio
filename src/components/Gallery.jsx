@@ -26,7 +26,9 @@ export default function Gallery() {
   const counterRef = useRef(null)
   const itemsRef   = useRef(null)
   const animating  = useRef(false)
-  const current    = useRef(0)   // índice 0-based activo
+  const current    = useRef(0)
+  const arrowPrevRef = useRef(null)
+  const arrowNextRef = useRef(null)
   const lightboxPopupRef = useRef(null)
   const [lightbox, setLightbox] = useState(null)
   const setLightboxRef = useRef(setLightbox)
@@ -55,22 +57,25 @@ export default function Gallery() {
   useLayoutEffect(() => {
     const slider = sliderRef.current
 
+    const isMobile = () => window.innerWidth <= 768
+
     const clip = {
       closed: 'polygon(25% 30%, 75% 30%, 75% 70%, 25% 70%)',
       open:   'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
     }
-    const pos = {
-      prev:   { left: '15%', rotation: -90 },
-      active: { left: '50%', rotation:   0 },
-      next:   { left: '85%', rotation:  90 },
-    }
+    // Desktop: 3 columnas con rotación | Móvil: fuera de pantalla, sin rotación
+    const getPos = () => isMobile()
+      ? { prev: { left: '-60%', rotation: 0 }, active: { left: '50%', rotation: 0 }, next: { left: '160%', rotation: 0 } }
+      : { prev: { left: '15%',  rotation: -90 }, active: { left: '50%', rotation: 0 }, next: { left: '85%', rotation: 90 } }
+
+    let pos = getPos()
 
     // ── Setup inicial ────────────────────────────────────────────────────
     ;['prev', 'active', 'next'].forEach(p => {
       const el = slider.querySelector(`[data-pos="${p}"]`)
       gsap.set(el, { ...pos[p], xPercent: -50, yPercent: -50,
-        clipPath: p === 'active' ? clip.open : clip.closed })
-      if (p !== 'active')
+        clipPath: isMobile() ? clip.open : (p === 'active' ? clip.open : clip.closed) })
+      if (p !== 'active' && !isMobile())
         gsap.set(el.querySelector(`.${styles.slideImg}`), { rotation: -pos[p].rotation })
     })
 
@@ -84,6 +89,13 @@ export default function Gallery() {
 
     // ── Eventos ──────────────────────────────────────────────────────────
     slider.addEventListener('click', onSliderClick)
+
+    // Flechas móvil
+    const onPrev = () => { if (!animating.current) transition('prev') }
+    const onNext = () => { if (!animating.current) transition('next') }
+    arrowPrevRef.current?.addEventListener('click', onPrev)
+    arrowNextRef.current?.addEventListener('click', onNext)
+
     itemsRef.current.querySelectorAll('p').forEach((item, i) => {
       item.addEventListener('click', () => {
         if (i !== current.current && !animating.current)
@@ -97,12 +109,13 @@ export default function Gallery() {
       clearTimeout(resizeTimer)
       resizeTimer = setTimeout(() => {
         if (animating.current) return
+        pos = getPos()   // recalcular para el nuevo tamaño
         slider.querySelectorAll('[data-pos]').forEach(el => {
           const p = el.dataset.pos
           if (!pos[p]) return
           gsap.set(el, { ...pos[p], xPercent: -50, yPercent: -50,
-            clipPath: p === 'active' ? clip.open : clip.closed })
-          if (p !== 'active') {
+            clipPath: isMobile() ? clip.open : (p === 'active' ? clip.open : clip.closed) })
+          if (p !== 'active' && !isMobile()) {
             const imgEl = el.querySelector(`.${styles.slideImg}`)
             if (imgEl) gsap.set(imgEl, { rotation: -pos[p].rotation })
           }
@@ -113,6 +126,8 @@ export default function Gallery() {
 
     return () => {
       slider.removeEventListener('click', onSliderClick)
+      arrowPrevRef.current?.removeEventListener('click', onPrev)
+      arrowNextRef.current?.removeEventListener('click', onNext)
       window.removeEventListener('resize', onResize)
       clearTimeout(resizeTimer)
       gsap.killTweensOf(slider.querySelectorAll('*'))
@@ -137,10 +152,12 @@ export default function Gallery() {
 
     function getIdx(offset) { return wrap(current.current + offset) }
 
-    function animateSlideEl(el, props) {
-      gsap.to(el, { ...props, duration: 2, ease: 'sliderHop' })
-      gsap.to(el.querySelector(`.${styles.slideImg}`),
-        { rotation: -props.rotation, duration: 2, ease: 'sliderHop' })
+    function animateSlideEl(el, props, dur) {
+      gsap.to(el, { ...props, duration: dur, ease: 'sliderHop' })
+      if (!isMobile()) {
+        gsap.to(el.querySelector(`.${styles.slideImg}`),
+          { rotation: -props.rotation, duration: dur, ease: 'sliderHop' })
+      }
     }
 
     function createSlide(slide, dataPos) {
@@ -152,7 +169,7 @@ export default function Gallery() {
       return el
     }
 
-    function animateTitle(slide, direction) {
+    function animateTitle(slide, direction, dur, delay) {
       const h1 = document.createElement('h1')
       h1.innerText = slide.name
       titleRef.current.appendChild(h1)
@@ -161,12 +178,12 @@ export default function Gallery() {
       const yOff = direction === 'next' ? 60 : -60
       gsap.set(h1.querySelectorAll('span'), { y: yOff })
       gsap.to(h1.querySelectorAll('span'),
-        { y: 0, duration: 1.25, stagger: 0.02, ease: 'sliderHop', delay: 0.25 })
+        { y: 0, duration: dur, stagger: 0.02, ease: 'sliderHop', delay })
 
       const old = titleRef.current.querySelector('h1:not(:last-child)')
       if (old) {
         gsap.to(old.querySelectorAll('span'), {
-          y: -yOff, duration: 1.25, stagger: 0.02, ease: 'sliderHop', delay: 0.25,
+          y: -yOff, duration: dur, stagger: 0.02, ease: 'sliderHop', delay,
           onComplete: () => old.remove(),
         })
       }
@@ -198,29 +215,53 @@ export default function Gallery() {
       const actEl  = slider.querySelector('[data-pos="active"]')
       const inEl   = slider.querySelector(`[data-pos="${inPos}"]`)
 
-      animateSlideEl(inEl,  { ...pos.active,    clipPath: clip.open })
-      animateSlideEl(actEl, { ...pos[outPos],   clipPath: clip.closed })
-      gsap.to(outEl, { scale: 0, opacity: 0, duration: 2, ease: 'sliderHop' })
+      const mob = isMobile()
+      const dur = mob ? 0.7 : 2
 
-      const newSlide = createSlide(SLIDES[getIdx(direction === 'next' ? 2 : -2)], inPos)
+      // newSlide: se pre-carga en la posición lateral para la siguiente transición
+      const preloadIdx = getIdx(direction === 'next' ? 2 : -2)
+      const newSlide   = createSlide(SLIDES[preloadIdx], inPos)
       slider.appendChild(newSlide)
-      gsap.set(newSlide, { ...pos[inPos], xPercent: -50, yPercent: -50,
-        scale: 0, opacity: 0, clipPath: clip.closed })
-      gsap.to(newSlide, { scale: 1, opacity: 1, duration: 2, ease: 'sliderHop' })
+
+      if (mob) {
+        // ── Móvil: crossfade con leve scale — mismo ease que el texto (sliderHop)
+        gsap.set(inEl, { ...pos.active, xPercent: -50, yPercent: -50,
+          opacity: 0, scale: 0.96, clipPath: clip.open })
+        gsap.to(inEl,  { opacity: 1, scale: 1,    duration: dur, ease: 'sliderHop' })
+        gsap.to(actEl, { opacity: 0, scale: 1.04, duration: dur, ease: 'sliderHop' })
+        gsap.set(outEl,    { opacity: 0 })
+        gsap.set(newSlide, { ...pos[inPos], xPercent: -50, yPercent: -50,
+          opacity: 0, scale: 0.96, clipPath: clip.open })
+      } else {
+        // ── Desktop: comportamiento original con rotación y clipPath
+        animateSlideEl(inEl,  { ...pos.active,  clipPath: clip.open  }, dur)
+        animateSlideEl(actEl, { ...pos[outPos], clipPath: clip.closed }, dur)
+        gsap.to(outEl,    { scale: 0, opacity: 0, duration: dur, ease: 'sliderHop' })
+        gsap.set(newSlide, { ...pos[inPos], xPercent: -50, yPercent: -50,
+          scale: 0, opacity: 0, clipPath: clip.closed })
+        gsap.to(newSlide, { scale: 1, opacity: 1, duration: dur, ease: 'sliderHop' })
+      }
 
       const nextIdx = getIdx(direction === 'next' ? 1 : -1)
-      animateTitle(SLIDES[nextIdx], direction)
+      // Título: móvil usa dur compartido (sincronizado con foto)
+      //         desktop usa sus timings originales (independiente de la foto)
+      if (mob) {
+        animateTitle(SLIDES[nextIdx], direction, 0.7, 0)
+      } else {
+        animateTitle(SLIDES[nextIdx], direction, 1.25, 0.25)
+      }
       updatePreview(SLIDES[nextIdx])
 
-      setTimeout(() => updateCounterAndHighlight(nextIdx), 1000)
+      const lockMs = dur * 1000
+      setTimeout(() => updateCounterAndHighlight(nextIdx), lockMs * 0.5)
       setTimeout(() => {
         outEl.remove()
-        actEl.dataset.pos = outPos
-        inEl.dataset.pos  = 'active'
+        actEl.dataset.pos    = outPos
+        inEl.dataset.pos     = 'active'
         newSlide.dataset.pos = inPos
-        current.current = nextIdx
-        animating.current = false
-      }, 2000)
+        current.current      = nextIdx
+        animating.current    = false
+      }, lockMs)
     }
   }, [])
 
@@ -282,6 +323,14 @@ export default function Gallery() {
         <div ref={previewRef} className={styles.sliderPreview}>
           <img src={SLIDES[0].img} alt="" />
         </div>
+
+        {/* Flechas — solo visibles en móvil */}
+        <button ref={arrowPrevRef} className={`${styles.arrow} ${styles.arrowPrev}`} aria-label="Anterior">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button ref={arrowNextRef} className={`${styles.arrow} ${styles.arrowNext}`} aria-label="Siguiente">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
 
       </div>
     </section>

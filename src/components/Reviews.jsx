@@ -22,14 +22,14 @@ const REVIEWS = [
     text:   'Una experiencia personalizada y muy recomendada. Si tenéis algún evento especial —una graduación, una boda— este es el mejor sitio para hacerte tu corte favorito 🤙🏼',
   },
   {
-    name:   'Mounir Kaouachi',
-    time:   'Hace 4 meses',
-    text:   'La mejor peluquería del mundo. Peluquería top, en el centro de la ciudad con un trato inmejorable. El dueño es un crack.',
-  },
-  {
     name:   'Mario Plou',
     time:   'Hace 2 meses',
     text:   'Muy buen servicio, muy amable. Te va preguntando durante el corte para que quede exactamente a tu gusto.',
+  },
+  {
+    name:   'Ser Az Az',
+    time:   'Hace 3 meses',
+    text:   'Me aconsejó muy bien y el servicio fue muy bueno. El trato fue muy agradable. Se está muy a gusto durante el corte.',
   },
 ]
 

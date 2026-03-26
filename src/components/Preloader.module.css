@@ -96,9 +96,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  image-rendering: high-quality;
-  transform: translateZ(0);   /* promueve a su propia capa → muestreo más nítido */
   display: block;
+  /* Sin transform ni will-change aquí — el padre ya tiene su propia capa GPU.
+     Una capa anidada hace que Safari rasterice la textura a resolución reducida. */
 }
 
 /* ── Título — z:3 ────────────────────────────────────────────────────────── */
