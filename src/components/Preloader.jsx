@@ -80,6 +80,12 @@ export default function Preloader() {
 
     revealTl.to(heroImg, {
       scale: getScale(), duration: 1, ease: 'hop',
+      onComplete() {
+        // Quitar will-change fuerza al navegador a re-rasterizar
+        // la imagen a resolución completa → elimina el pixelado
+        heroImg.style.willChange = 'auto'
+        heroImg.querySelector('img').style.willChange = 'auto'
+      },
     })
 
     // Corregir scale si el usuario cambia de resolución (DevTools / resize)

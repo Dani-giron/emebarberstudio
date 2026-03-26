@@ -60,7 +60,7 @@ export default function About() {
           </h2>
           <div className="divider" />
           <p>
-            En EME Studio Barber combinamos técnica tradicional y tendencias modernas para
+            En EME barber studio combinamos técnica tradicional y tendencias modernas para
             ofrecerte el mejor look posible. Nuestro equipo perfecciona
             el arte del corte masculino en el corazón de Zaragoza.
           </p>
