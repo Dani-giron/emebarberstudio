@@ -216,8 +216,11 @@ export default function Gallery() {
       const actEl  = slider.querySelector('[data-pos="active"]')
       const inEl   = slider.querySelector(`[data-pos="${inPos}"]`)
 
-      // Ocultar todas las etiquetas al inicio de la transición
-      slider.querySelectorAll(`.${styles.slideLabel}`).forEach(l => gsap.set(l, { opacity: 0 }))
+      // Ocultar todas las etiquetas al inicio — matar tweens pendientes primero
+      slider.querySelectorAll(`.${styles.slideLabel}`).forEach(l => {
+        gsap.killTweensOf(l, 'opacity')
+        gsap.set(l, { opacity: 0 })
+      })
 
       const mob = isMobile()
       const dur = mob ? 0.7 : 2
