@@ -140,7 +140,7 @@ export default function Preloader() {
 
       {/* Foto de fondo */}
       <div className={styles.bgPhoto}>
-        <img src="/images/barberia.jpg" alt="" aria-hidden="true" />
+        <img src="/images/barberia%20buena.jpeg" alt="" aria-hidden="true" />
       </div>
 
       {/* Overlay oscuro */}

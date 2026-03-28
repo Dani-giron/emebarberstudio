@@ -41,14 +41,9 @@ export default function About() {
         {/* Imagen */}
         <div ref={imgRef} className={styles.imgWrap}>
           <img
-            src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=900&q=80"
+            src="/images/barberia%20buena.jpeg"
             alt="Interior de EME Studio Barber"
           />
-          {/* Badge flotante */}
-          <div className={styles.badge}>
-            <span className={styles.badgeYear}>2018</span>
-            <span className={styles.badgeText}>Est.</span>
-          </div>
         </div>
 
         {/* Texto */}
