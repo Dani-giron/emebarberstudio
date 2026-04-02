@@ -82,7 +82,7 @@ export default function Services() {
                     <span className={styles.rowTime}>{item.time}</span>
                   </div>
                   <a
-                    href={`${CONTACT.whatsapp}&text=Hola%2C%20quiero%20reservar%3A%20${encodeURIComponent(item.name)}`}
+                    href={`${CONTACT.whatsappBase}?text=${encodeURIComponent('Hola, quiero reservar: ' + item.name)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.reserveBtn}
