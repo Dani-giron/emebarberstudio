@@ -3,11 +3,12 @@ import { useEffect } from 'react'
 import Lenis from 'lenis'
 import Preloader from './components/Preloader'
 import Navbar    from './components/Navbar'
+import Studio    from './components/Studio'
 import Services  from './components/Services'
 import Gallery   from './components/Gallery'
 import About     from './components/About'
 import Courses   from './components/Courses'
-import Reviews  from './components/Reviews'
+import Reviews   from './components/Reviews'
 import Location  from './components/Location'
 import Footer    from './components/Footer'
 
@@ -47,10 +48,11 @@ export default function App() {
     <>
       <Navbar />
       <Preloader />
-      <Services />
+      <Studio />
       <Gallery />
-      <About />
+      <Services />
       <Courses />
+     <About />
       <Reviews />
       <Location />
       <Footer />

@@ -3,9 +3,9 @@ import gsap from 'gsap'
 import styles from './Navbar.module.css'
 
 const LINKS = [
-  { label: 'Servicios', href: '#servicios' },
-  { label: 'Galería',   href: '#galeria' },
   { label: 'Nosotros',  href: '#nosotros' },
+  { label: 'Galería',   href: '#galeria' },
+  { label: 'Servicios', href: '#servicios' },
   { label: 'Cursos',    href: '#cursos' },
   { label: 'Ubicación', href: '#ubicacion' },
 ]
