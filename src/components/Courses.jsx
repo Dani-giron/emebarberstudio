@@ -24,7 +24,7 @@ const COURSES = [
     duration: '60 h',
     format: 'Teórico + Práctico + Clientes reales',
     featured: true,
-    tags: ['One to One', 'Disponibilidad mañanas y tardes'],
+    tags: ['One to One', 'Un alumno vs un profesor', 'Disponibilidad mañanas y tardes'],
   },
   {
     level: 'Formación profesional',
@@ -35,11 +35,9 @@ const COURSES = [
     format: 'Teórico + Práctico + Clientes reales',
     featured: true,
     topBadge: 'Material incluido',
-    tags: ['One to One', 'Material de barbero incluido', 'De principiante a formado'],
+    tags: ['One to One', 'Un alumno vs un profesor', 'Material de barbero incluido', 'De principiante a formado'],
   },
 ]
-
-const COMMON_TAG = 'Esto en todos los cursos'
 
 export default function Courses() {
   const headRef  = useRef(null)
@@ -87,9 +85,6 @@ export default function Courses() {
             <div className={styles.top}>
               <span className={styles.level}>{c.level}</span>
 
-              {/* Tag común */}
-              <span className={styles.tagCommon}>{COMMON_TAG}</span>
-
               <p className={styles.price}>{c.price}</p>
               <h3 className={styles.cardTitle}>{c.title}</h3>
               <p className={styles.cardDesc}>{c.desc}</p>
@@ -114,7 +109,7 @@ export default function Courses() {
                 </li>
               </ul>
               <a
-                href={`${CONTACT.whatsapp}&text=Hola%2C%20me%20interesa%20el%20curso%20${encodeURIComponent(c.title)}`}
+                href={`${CONTACT.whatsappBase}?text=${encodeURIComponent('Hola, me interesa el curso: ' + c.title)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`btn ${c.featured ? 'btn-primary' : 'btn-outline'} ${styles.cardBtn}`}
