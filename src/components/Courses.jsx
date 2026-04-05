@@ -14,6 +14,7 @@ const COURSES = [
     price: '100 €',
     duration: '8 h',
     format: 'Presencial',
+    tags: ['One to One', 'Un alumno vs un profesor'],
   },
   {
     level: 'Formación completa',
@@ -23,8 +24,22 @@ const COURSES = [
     duration: '60 h',
     format: 'Teórico + Práctico + Clientes reales',
     featured: true,
+    tags: ['One to One', 'Disponibilidad mañanas y tardes'],
+  },
+  {
+    level: 'Formación profesional',
+    title: 'Curso de 3 meses',
+    desc: 'De cero a barbero formado. Formación intensiva con material de barbero incluido. Saldrás con todo lo necesario para ejercer el oficio desde el primer día.',
+    price: '2.900 €',
+    duration: '180 h',
+    format: 'Teórico + Práctico + Clientes reales',
+    featured: true,
+    topBadge: 'Material incluido',
+    tags: ['One to One', 'Material de barbero incluido', 'De principiante a formado'],
   },
 ]
+
+const COMMON_TAG = 'Esto en todos los cursos'
 
 export default function Courses() {
   const headRef  = useRef(null)
@@ -60,20 +75,31 @@ export default function Courses() {
         </p>
       </div>
 
-      {/* Split 1:1 a sangre completa */}
+      {/* Cards */}
       <div ref={cardsRef} className={styles.split}>
         {COURSES.map((c) => (
           <article
             key={c.title}
             className={`${styles.panel} ${c.featured ? styles.panelFeatured : ''}`}
           >
-            {c.featured && <span className={styles.badge}>Más completo</span>}
+            {c.topBadge && <span className={styles.badgeTop}>{c.topBadge}</span>}
 
             <div className={styles.top}>
               <span className={styles.level}>{c.level}</span>
+
+              {/* Tag común */}
+              <span className={styles.tagCommon}>{COMMON_TAG}</span>
+
               <p className={styles.price}>{c.price}</p>
               <h3 className={styles.cardTitle}>{c.title}</h3>
               <p className={styles.cardDesc}>{c.desc}</p>
+
+              {/* Tags específicos del curso */}
+              <div className={styles.tags}>
+                {c.tags.map((t) => (
+                  <span key={t} className={styles.tag}>{t}</span>
+                ))}
+              </div>
             </div>
 
             <div className={styles.bottom}>

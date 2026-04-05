@@ -137,3 +137,54 @@
   justify-content: center;
   font-size: 0.8rem;
 }
+
+/* Badge superior (material incluido) */
+.badgeTop {
+  position: absolute;
+  top: 1.75rem;
+  right: 0.5rem;
+  background: var(--color-accent);
+  color: #000;
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+}
+
+/* Tag "Esto en todos los cursos" */
+.tagCommon {
+  display: inline-block;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-gray-light);
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.7rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Tags específicos */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+.tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--color-border);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+}

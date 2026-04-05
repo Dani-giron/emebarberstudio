@@ -1,13 +1,14 @@
 .studio {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  height: 75vh;
+  grid-template-columns: 1fr;
   gap: 3px;
   padding: 0;
+  position: relative;
 }
 
 .photo {
   overflow: hidden;
+  position: relative;
 }
 
 .photo img {
@@ -22,9 +23,47 @@
   transform: scale(1.04);
 }
 
-@media (max-width: 768px) {
-  .studio {
-    grid-template-columns: 1fr 1fr;
-    height: 55vw;
+/* Texto split superpuesto */
+.overlay {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+  padding: 1.5rem;
+}
+
+.topLeft {
+  top: 0;
+  left: 0;
+}
+
+.topRight {
+  top: 0;
+  right: 0;
+  justify-content: flex-end;
+}
+
+.char {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 9vw, 10rem);
+  font-weight: 900;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  white-space: pre;
+  text-shadow: 0 4px 32px rgba(0,0,0,0.7);
+}
+
+@media (max-width: 480px) {
+  .overlay {
+    padding: 1rem;
+  }
+  .char {
+    font-size: clamp(3rem, 10vw, 4rem);
   }
 }
+

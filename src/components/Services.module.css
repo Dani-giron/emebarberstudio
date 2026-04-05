@@ -36,6 +36,40 @@
 
 .row:hover { background: rgba(255,255,255,0.02); }
 
+/* Fila destacada */
+.rowFeatured {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  padding: 1.1rem 1.25rem;
+  margin: 0.5rem 0;
+  position: relative;
+}
+
+.rowFeatured::before {
+  content: 'Más popular';
+  position: absolute;
+  top: -0.65rem;
+  left: 1.25rem;
+  background: var(--color-white);
+  color: #000;
+  font-family: var(--font-body);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+}
+
+.rowFeatured .rowName {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.rowFeatured .rowPrice {
+  color: var(--color-accent);
+}
+
 .rowName {
   font-size: 1rem;
   color: var(--color-white);

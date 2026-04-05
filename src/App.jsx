@@ -52,7 +52,7 @@ export default function App() {
       <Gallery />
       <Services />
       <Courses />
-     <About />
+      <About />
       <Reviews />
       <Location />
       <Footer />

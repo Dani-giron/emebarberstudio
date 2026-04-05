@@ -20,7 +20,7 @@ const CATEGORIES = [
   {
     name: 'Barba',
     items: [
-      { name: 'Corte + Barba',          price: '18 €', time: '45 min' },
+      { name: 'Corte + Repaso de barba', price: '18 €', time: '45 min', featured: true },
       { name: 'Barba desde 0',          price: '10 €', time: '30 min' },
       { name: 'Repaso de barba',         price: '5 €',  time: '15 min' },
       { name: 'Marcar bigote y perilla', price: '3 €',  time: '5 min'  },
@@ -74,7 +74,7 @@ export default function Services() {
             <h3 className={styles.catTitle}>{cat.name}</h3>
 
             {cat.items.map((item) => (
-              <div key={item.name} data-row className={styles.row}>
+              <div key={item.name} data-row className={`${styles.row} ${item.featured ? styles.rowFeatured : ''}`}>
                 <span className={styles.rowName}>{item.name}</span>
                 <div className={styles.rowRight}>
                   <div className={styles.rowMeta}>
