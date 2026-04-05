@@ -10,17 +10,17 @@ const CATEGORIES = [
   {
     name: 'Cortes',
     items: [
-      { name: 'Corte caballero con degradado',              price: '13 €+', time: '30 min' },
+      { name: 'Corte + Repaso de barba',                     price: '18 €',  time: '45 min', featured: true },
+      { name: 'Corte caballero con degradado',               price: '13 €+', time: '30 min' },
       { name: 'Corte caballero con degradado sin estructura', price: '17 €',  time: '45 min' },
-      { name: 'Corte caballero básico con estructura',       price: '10 €+', time: '30 min' },
-      { name: 'Corte caballero básico sin estructura',       price: '15 €',  time: '45 min' },
-      { name: 'Corte de caballero solo tijera',              price: '20 €',  time: '30 min' },
+      { name: 'Corte caballero básico con estructura',        price: '10 €+', time: '30 min' },
+      { name: 'Corte caballero básico sin estructura',        price: '15 €',  time: '45 min' },
+      { name: 'Corte de caballero solo tijera',               price: '20 €',  time: '30 min' },
     ],
   },
   {
     name: 'Barba',
     items: [
-      { name: 'Corte + Repaso de barba', price: '18 €', time: '45 min', featured: true },
       { name: 'Barba desde 0',          price: '10 €', time: '30 min' },
       { name: 'Repaso de barba',         price: '5 €',  time: '15 min' },
       { name: 'Marcar bigote y perilla', price: '3 €',  time: '5 min'  },
