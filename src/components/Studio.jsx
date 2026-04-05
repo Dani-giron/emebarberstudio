@@ -10,31 +10,28 @@ const PHOTOS = [
     src: '/images/barberia%20buena.jpeg',
     pos: 'center center',
     label: 'El Studio',
-    align: 'topLeft',
+    align: 'left',
   },
   {
     src: '/images/barberiabuena2.webp',
     pos: 'center center',
     label: 'Donde el estilo nace.',
-    align: 'topRight',
+    align: 'right',
   },
 ]
 
 export default function Studio() {
-  const overlaysRef = useRef([])
+  const labelsRef = useRef([])
 
   useEffect(() => {
-    overlaysRef.current.forEach((el) => {
+    labelsRef.current.forEach(el => {
       if (!el) return
-      const chars = el.querySelectorAll('span')
-      gsap.fromTo(chars,
+      gsap.fromTo(el.querySelectorAll('span'),
         { y: '110%', opacity: 0 },
         {
           y: '0%', opacity: 1,
-          stagger: 0.035,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%' },
+          stagger: 0.035, duration: 1, ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 90%' },
         }
       )
     })
@@ -42,22 +39,27 @@ export default function Studio() {
 
   return (
     <section className={styles.studio}>
-      {PHOTOS.map((p, i) => (
-        <div key={i} className={styles.photo}>
-          <img src={p.src} alt="EME Studio Barber" style={{ objectPosition: p.pos }} />
-          <div
-            ref={el => overlaysRef.current[i] = el}
-            className={`${styles.overlay} ${styles[p.align]}`}
-            aria-label={p.label}
-          >
-            {p.label.split('').map((char, j) => (
-              <span key={j} className={styles.char}>
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
-          </div>
+      <div className="container">
+        <div className={styles.stack}>
+          {PHOTOS.map((p, i) => (
+            <div key={i} className={styles.block}>
+              <div
+                ref={el => { labelsRef.current[i] = el }}
+                className={`${styles.label} ${styles[p.align]}`}
+              >
+                {p.label.split('').map((char, j) => (
+                  <span key={j} className={styles.char}>
+                    {char === ' ' ? '\u00A0' : char}
+                  </span>
+                ))}
+              </div>
+              <div className={styles.photo}>
+                <img src={p.src} alt="EME Studio Barber" style={{ objectPosition: p.pos }} />
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      </div>
     </section>
   )
 }
