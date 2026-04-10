@@ -1,10 +1,29 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { CONTACT } from '../contact'
+import CourseModal from './CourseModal'
 import styles from './Courses.module.css'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const TEORIA = [
+  'Visagismo y análisis del rostro',
+  'Fundamentos de la barbería clásica y moderna',
+  'Uso correcto de herramientas',
+  'Técnicas de corte y degradado',
+  'Higiene, protocolo y atención al cliente',
+]
+
+const PRACTICA = [
+  'Maniquí',
+  'Técnicas guiadas paso a paso',
+  'Corrección directa',
+  'Degradados (Fade) paso a paso',
+  'Perfilado de barba profesional',
+  'Adaptación del corte al cliente',
+  'Técnica y precisión con máquina y tijera',
+]
 
 const COURSES = [
   {
@@ -15,6 +34,9 @@ const COURSES = [
     duration: '8 h',
     format: 'Presencial',
     tags: ['One to One', 'Un alumno vs un profesor'],
+    program: [
+      { label: 'Práctica', items: PRACTICA },
+    ],
   },
   {
     level: 'Formación completa',
@@ -25,6 +47,10 @@ const COURSES = [
     format: 'Teórico + Práctico + Clientes reales',
     featured: true,
     tags: ['One to One', 'Un alumno vs un profesor', 'Disponibilidad mañanas y tardes'],
+    program: [
+      { label: 'Teoría', items: TEORIA },
+      { label: 'Práctica', items: PRACTICA },
+    ],
   },
   {
     level: 'Formación profesional',
@@ -36,12 +62,24 @@ const COURSES = [
     featured: true,
     topBadge: 'Material incluido',
     tags: ['One to One', 'Un alumno vs un profesor', 'Material de barbero incluido', 'De principiante a formado'],
+    program: [
+      { label: 'Teoría', items: TEORIA },
+      {
+        label: 'Práctica',
+        items: [
+          ...PRACTICA,
+          'Clientes reales desde el primer día',
+          'Gestión y atención al cliente en barbería',
+        ],
+      },
+    ],
   },
 ]
 
 export default function Courses() {
-  const headRef  = useRef(null)
-  const cardsRef = useRef(null)
+  const headRef    = useRef(null)
+  const cardsRef   = useRef(null)
+  const [activeCourse, setActiveCourse] = useState(null)
 
   useEffect(() => {
     gsap.fromTo(headRef.current.children,
@@ -84,12 +122,10 @@ export default function Courses() {
 
             <div className={styles.top}>
               <span className={styles.level}>{c.level}</span>
-
               <p className={styles.price}>{c.price}</p>
               <h3 className={styles.cardTitle}>{c.title}</h3>
               <p className={styles.cardDesc}>{c.desc}</p>
 
-              {/* Tags específicos del curso */}
               <div className={styles.tags}>
                 {c.tags.map((t) => (
                   <span key={t} className={styles.tag}>{t}</span>
@@ -108,6 +144,17 @@ export default function Courses() {
                   {c.format}
                 </li>
               </ul>
+
+              <button
+                className={`${styles.programBtn}`}
+                onClick={() => setActiveCourse(c)}
+              >
+                Ver programa completo
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+
               <a
                 href={`${CONTACT.whatsappBase}?text=${encodeURIComponent('Hola, me interesa el curso: ' + c.title)}`}
                 target="_blank"
@@ -120,6 +167,14 @@ export default function Courses() {
           </article>
         ))}
       </div>
+
+      {/* Modal */}
+      {activeCourse && (
+        <CourseModal
+          course={activeCourse}
+          onClose={() => setActiveCourse(null)}
+        />
+      )}
 
     </section>
   )
