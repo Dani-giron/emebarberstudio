@@ -83,29 +83,23 @@
   letter-spacing: 0.15em;
 }
 
-/* ── Imágenes — z:2 ──────────────────────────────────────────────────────── */
+/* ── Grid 3×3 centrado — z:2 ────────────────────────────────────────────── */
 .heroImages {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  padding: 0 2rem;
-  display: flex;
-  justify-content: center;
-  gap: 10vw;
-  will-change: gap;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: grid;
+  grid-template-columns: repeat(3, 14vw);
+  grid-template-rows: repeat(3, calc(14vw * 1.4));
+  /* gap inicial controlado por GSAP */
   z-index: 2;
 }
 
 .img {
-  width: 14vw;
-  aspect-ratio: 5 / 7;
-  transform: translateY(50%) scale(0.5);
-  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-  opacity: 0;
   overflow: hidden;
-  will-change: opacity, transform, clip-path;
-  flex-shrink: 0;
+  clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+  will-change: clip-path, transform;
 }
 
 .img img {
@@ -113,8 +107,6 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  /* Sin transform ni will-change aquí — el padre ya tiene su propia capa GPU.
-     Una capa anidada hace que Safari rasterice la textura a resolución reducida. */
 }
 
 /* ── Título — z:3 ────────────────────────────────────────────────────────── */
@@ -210,30 +202,27 @@
   .counter              { right: 1rem; bottom: 1rem; }
   .counter h1           { font-size: 2.5rem; }
   .overlayTextContainer { top: 1rem; left: 1rem; }
-  .heroImages           { padding: 0; }   /* sin override de gap — mantiene 10vw para la animación */
-  .img                  { width: 18vw; }
 }
 
 @media (max-width: 600px) {
-  /* 20vw → 3 fotos visibles durante la animación.
-     GSAP aplica scale:3 → visual 60vw ancho × 84vw alto */
-  .img { width: 20vw; }
+  /* En móvil los tiles son más grandes: 20vw × 28vw
+     GSAP aplica scale(3) → 60vw ancho × 84vw alto visible */
+  .heroImages {
+    grid-template-columns: repeat(3, 20vw);
+    grid-template-rows: repeat(3, calc(20vw * 1.4));
+  }
 
-  /* Imagen centrada */
-  .heroImages { top: 50%; }
-
-  /* EME pisa la foto ~15px.
-     50svh = centro imagen · 42vw = mitad altura visual (84vw/2) · 46vw = altura header aprox */
+  /* Título se posiciona respecto al tile central escalado */
   .heroHeader { bottom: max(1rem, calc(50svh - 88vw + 15px)); }
 
-  /* Fuentes — EME grande, BARBER STUDIO casi full-width */
+  .counter h1           { font-size: 2rem; font-weight: 500; }
+
   .eme { font-size: clamp(4rem, 24vw, 7rem); }
   .sub {
     font-size: clamp(1.1rem, 8vw, 2.5rem);
     letter-spacing: 0.38em;
   }
 
-  /* CTAs en fila compacta */
   .cta { gap: 0.5rem; margin-top: 0.75rem; }
   .ctaBtn {
     padding: 0.65rem 1.1rem;
@@ -242,8 +231,4 @@
     gap: 0.4rem;
   }
   .ctaBtn svg { width: 14px; height: 14px; }
-
-  /* Contador visible */
-  .counter { right: 1rem; bottom: 1rem; }
-  .counter h1 { font-size: 2rem; font-weight: 500; }
 }

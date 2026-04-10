@@ -1,4 +1,4 @@
-// Preloader/Hero — 1:1 con la referencia
+// Preloader — grid 3×3
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { CustomEase } from 'gsap/CustomEase'
@@ -9,23 +9,27 @@ gsap.registerPlugin(CustomEase)
 CustomEase.create('hop', '0.85, 0, 0.15, 1')
 
 const IMGS = [
-  '/images/lado1.webp',   // lateral izquierdo
-  '/images/lado2.webp',   // lateral izquierdo interior
-  '/images/centro.webp',  // imagen central (se queda y se expande)
-  '/images/lado1.webp',   // lateral derecho interior (se repite)
-  '/images/lado2.webp',   // lateral derecho
+  '/images/lado1.webp',
+  '/images/buzzcut.webp',
+  '/images/midfade.webp',
+  '/images/highfade.webp',
+  '/images/centro.webp',            // ← centro (HERO_IDX)
+  '/images/mullet.webp',
+  '/images/taper%20fade.webp',
+  '/images/lado2.webp',
+  '/images/barberia%20buena.jpeg',
 ]
-const HERO_IDX = 2
+const HERO_IDX = 4
 
 export default function Preloader() {
-  const overlayRef     = useRef(null)
-  const counterRef     = useRef(null)
-  const overlayTextRef = useRef(null)
-  const imagesRef      = useRef(null)
-  const imgRefs        = useRef([])
-  const emeRef         = useRef(null)
-  const subRef         = useRef(null)
-  const ctaRef         = useRef(null)
+  const overlayRef      = useRef(null)
+  const counterRef      = useRef(null)
+  const overlayTextRef  = useRef(null)
+  const heroImagesRef   = useRef(null)
+  const imgRefs         = useRef([])
+  const emeRef          = useRef(null)
+  const subRef          = useRef(null)
+  const ctaRef          = useRef(null)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -36,7 +40,7 @@ export default function Preloader() {
     const counterTl = gsap.timeline({ delay: 0.5 })
     counterTl.to(counter, {
       value: 100,
-      duration: 5,
+      duration: 4,
       ease: 'power2.out',
       onUpdate() {
         if (counterRef.current)
@@ -53,75 +57,83 @@ export default function Preloader() {
       .to(textTrack, { y: '-4rem', duration: 0.75, ease: 'hop', delay: 0.75 })
       .to(textTrack, { y: '-6rem', duration: 0.75, ease: 'hop', delay: 1 })
 
-    // ── 3. Reveal + wipe + título + CTAs ──────────────────────────────────
+    // ── 3. Grid tiles ──────────────────────────────────────────────────────
     const nonHeroImgs = imgRefs.current.filter((_, i) => i !== HERO_IDX)
     const heroImg     = imgRefs.current[HERO_IDX]
 
-    const revealTl = gsap.timeline({ delay: 0.5 })
+    // Gap inicial grande — igual que en el preloader original
+    gsap.set(heroImagesRef.current, { columnGap: '10vw', rowGap: '10vw' })
 
-    revealTl.to(imgRefs.current, {
-      y: 0, opacity: 1, stagger: 0.05, duration: 1, ease: 'hop',
+    const tl = gsap.timeline({ delay: 0.3 })
+
+    // Todos los tiles aparecen desde abajo (stagger aleatorio)
+    tl.to(imgRefs.current, {
+      clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
+      duration: 0.65,
+      ease: 'hop',
+      stagger: { each: 0.07, from: 'random' },
     })
 
-    revealTl.to(imagesRef.current, {
-      gap: '0.75vw', duration: 1, delay: 0.5, ease: 'hop',
-    })
-    revealTl.to(imgRefs.current, {
-      scale: 1, duration: 1, ease: 'hop',
-    }, '<')
+    // Gap se cierra — tiles se juntan como en el original
+    tl.to(heroImagesRef.current, {
+      columnGap: '0.75vw',
+      rowGap: '0.75vw',
+      duration: 1, ease: 'hop',
+    }, '+=0.3')
 
-    revealTl.to(nonHeroImgs, {
-      clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
-      duration: 1, stagger: 0.1, ease: 'hop',
-    })
+    // Pausa mientras corre el contador
+    tl.to({}, { duration: 2 })
 
-    // Escala según breakpoint actual
-    const getScale = () => window.innerWidth <= 600 ? 3 : 1.3
-
-    revealTl.to(heroImg, {
-      scale: getScale(), duration: 1, ease: 'hop',
-      onComplete() {
-        // 1. force3D:false convierte matrix3d → scale() 2D
-        //    → libera la capa GPU → Safari re-rasteriza a resolución nativa
-        gsap.set(heroImg, { force3D: false, scale: getScale() })
-        // 2. Quitar will-change del contenedor e imagen
-        heroImg.style.willChange = 'auto'
-        heroImg.querySelector('img').style.willChange = 'auto'
-      },
-    })
-
-    // Corregir scale si el usuario cambia de resolución (DevTools / resize)
-    const onResize = () => gsap.set(heroImg, { scale: getScale() })
-    window.addEventListener('resize', onResize)
-
-    // Desvanecer contador y texto al empezar el wipe
-    revealTl.to([counterRef.current, overlayTextRef.current], {
+    // Desvanecer contador y texto
+    tl.to([counterRef.current, overlayTextRef.current], {
       opacity: 0, duration: 0.4, ease: 'power2.out',
     })
 
-    // Overlay wipe
-    revealTl.to(overlayRef.current, {
+    // Los 8 tiles laterales desaparecen (stagger aleatorio)
+    tl.to(nonHeroImgs, {
+      clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
+      duration: 0.55, ease: 'hop',
+      stagger: { each: 0.07, from: 'random' },
+    }, '<0.1')
+
+    // Tile central — misma animación que el preloader original
+    const getScale = () => window.innerWidth <= 600 ? 3 : 1.3
+
+    tl.to(heroImg, {
+      scale: getScale(), duration: 1, ease: 'hop',
+      onComplete() {
+        gsap.set(heroImg, { force3D: false, scale: getScale() })
+        heroImg.style.willChange = 'auto'
+        heroImg.querySelector('img').style.willChange = 'auto'
+      },
+    }, '<')
+
+    const onResize = () => gsap.set(heroImg, { scale: getScale() })
+    window.addEventListener('resize', onResize)
+
+    // Overlay wipe — revela el fondo y el título
+    tl.to(overlayRef.current, {
       clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
       duration: 1, ease: 'hop',
     }, '<0.1')
 
-    // EME sube — en este momento también aparece la navbar
-    revealTl.to(emeRef.current, {
+    // EME sube
+    tl.to(emeRef.current, {
       y: '0%', duration: 0.75, ease: 'power3.out',
       onStart: () => window.dispatchEvent(new CustomEvent('navbar-show')),
     }, '-=0.5')
 
     // BARBER STUDIO sube
-    revealTl.to(subRef.current, {
+    tl.to(subRef.current, {
       y: '0%', duration: 0.75, ease: 'power3.out',
     }, '-=0.6')
 
     // CTAs aparecen
-    revealTl.to(ctaRef.current, {
+    tl.to(ctaRef.current, {
       y: '0rem', opacity: 1, duration: 0.6, ease: 'power3.out',
     }, '-=0.4')
 
-    revealTl.call(() => {
+    tl.call(() => {
       document.body.style.overflow = ''
       window.dispatchEvent(new CustomEvent('preloader-done'))
     })
@@ -129,7 +141,7 @@ export default function Preloader() {
     return () => {
       counterTl.kill()
       overlayTextTl.kill()
-      revealTl.kill()
+      tl.kill()
       window.removeEventListener('resize', onResize)
       document.body.style.overflow = ''
     }
@@ -160,15 +172,15 @@ export default function Preloader() {
         </div>
       </div>
 
-      {/* Imágenes — z:2 */}
-      <div ref={imagesRef} className={styles.heroImages}>
+      {/* Grid 3×3 — z:2 */}
+      <div ref={heroImagesRef} className={styles.heroImages}>
         {IMGS.map((src, i) => (
           <div
             key={i}
             ref={el => { imgRefs.current[i] = el }}
-            className={`${styles.img} ${i === HERO_IDX ? styles.heroImg : ''}`}
+            className={styles.img}
           >
-            <img src={src} alt="EME Studio Barber" />
+            <img src={src} alt="" aria-hidden="true" />
           </div>
         ))}
       </div>
@@ -182,7 +194,6 @@ export default function Preloader() {
           <div ref={subRef} className={styles.sub}>Barber Studio</div>
         </div>
 
-        {/* CTAs — aparecen justo después del título */}
         <div ref={ctaRef} className={styles.cta}>
           <a
             href={CONTACT.whatsapp}
