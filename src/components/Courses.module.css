@@ -188,3 +188,69 @@
   text-transform: uppercase;
   padding: 0.3rem 0.8rem;
 }
+.programBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  background: transparent;
+  border: none;
+
+  color: rgba(255,255,255,0.7);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  padding: 0;
+  margin-top: 1.5rem;
+
+  transition: all 0.25s ease;
+}
+
+/* 🔥 Línea sutil debajo */
+.programBtn::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+
+  width: 0%;
+  height: 1px;
+
+  background: #fff;
+
+  transition: width 0.25s ease;
+}
+
+/* 🔥 Hover */
+.programBtn:hover {
+  color: #fff;
+}
+
+/* 🔥 animación línea */
+.programBtn:hover::after {
+  width: 100%;
+}
+
+/* 🔥 SVG animación */
+.programBtn svg {
+  transition: transform 0.25s ease;
+}
+
+.programBtn:hover svg {
+  transform: translateX(4px);
+}
+.programBtn {
+  padding: 0.8rem 1.2rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+}
+
+.programBtn:hover {
+  background: rgba(255,255,255,0.08);
+}
