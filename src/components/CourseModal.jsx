@@ -64,7 +64,7 @@ useEffect(() => {
           <button className={styles.close} onClick={handleClose}>✕</button>
         </div>
 
-        {/* 🚀 Contenedor con scroll real */}
+        {/*contenedor con scroll real */}
         <div className={styles.body}>
           <h2 className={styles.title}>{course.title}</h2>
           <div className={styles.priceBadge}>{course.price}</div>

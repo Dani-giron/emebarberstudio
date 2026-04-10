@@ -12,12 +12,12 @@ const REVIEWS = [
     text:   'Estoy muy agradecido con mi nuevo estilista. Me transmite mucha confianza con sus sugerencias y me encantan los resultados. Sin duda, se nota la experiencia.',
   },
   {
-    name:   'Luis Izquierdo',
+    name:   'luis Izquierdo',
     time:   'Hace 3 semanas',
     text:   'Gran profesional. Cuida el corte al máximo detalle, dedicándole el tiempo que sea necesario. Además tiene un trato muy agradable.',
   },
   {
-    name:   'Gabii Bueno',
+    name:   'Gabi Bueno',
     time:   'Hace un mes',
     text:   'Una experiencia personalizada y muy recomendada. Si tenéis algún evento especial —una graduación, una boda— este es el mejor sitio para hacerte tu corte favorito 🤙🏼',
   },
